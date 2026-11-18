@@ -1,0 +1,32 @@
+# Build
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+nupkg/
+*.nupkg
+*.snupkg
+artifacts/
+TestResults/
+*.trx
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated demo reports (keep samples only)
+/retrace-exit-report.md
+/retrace-exit-report.html
+/otel-snippets/
+
+# Tool / secrets — never commit a real NuGet key
+nuget.env
+*.snk

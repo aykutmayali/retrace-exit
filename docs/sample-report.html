@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Retrace Exit report</title>
+<style>body{font-family:system-ui,sans-serif;max-width:960px;margin:2rem auto;padding:0 1rem;line-height:1.45;color:#1b1b1b}table{border-collapse:collapse;width:100%;font-size:0.95rem}th,td{border:1px solid #ccc;padding:0.4rem 0.55rem;text-align:left;vertical-align:top}th{background:#f4f4f4}code,pre{font-family:ui-monospace,monospace}pre{background:#f7f7f7;padding:1rem;overflow:auto}.critical{color:#8b0000}.warning{color:#8a5a00}</style>
+</head><body>
+<h1>Retrace Exit report</h1>
+<p>Scanned: <code>/workspace/money-ideas/retrace-exit/scanner/samples</code><br>Backend hint: <code>azure-monitor</code><br>Findings: 24 (15 critical, 9 warning)</p>
+<p>Stackify Retrace reaches end of life on <strong>31 March 2027</strong>. After that date you cannot log in, ingest data, or read stored data. There is no automated conversion. Official letter: <a href="https://docs.stackify.com/docs/stackify-end-of-life-customer-letter">BMC Helix EOL announcement</a>.</p>
+<p>This report is an inventory, not a rewrite of your code. API keys and connection strings are never copied into the report.</p>
+<h2>Summary</h2>
+<table><thead><tr><th>Severity</th><th>Kind</th><th>Path</th><th>Line</th><th>Detail</th></tr></thead><tbody>
+<tr><td class="critical">critical</td><td>appsettings</td><td><code>aspnetcore-shop/appsettings.json</code></td><td>2</td><td>Stackify configuration section found. Remove ApiKey after cut-over (the value was not copied into this report). Move AppName and Environment to OTEL resource attributes or APPLICATIONINSIGHTS_CONNECTION_STRING in the environment / Key Vault. An ApiKey value is present and was not copied into this report.</td></tr>
+<tr><td class="critical">critical</td><td>profiler-guid</td><td><code>aspnetcore-shop/Dockerfile</code></td><td>2</td><td>Retrace .NET profiler GUID found. Replace CORECLR_PROFILER / COR_PROFILER with OpenTelemetry auto-instrumentation variables and remove StackifyProfiler.so / the Retrace agent after the new path is proven.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>aspnetcore-shop/Sample.AspNetCoreShop.csproj</code></td><td>8</td><td>Package &#39;StackifyLib&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>aspnetcore-shop/Sample.AspNetCoreShop.csproj</code></td><td>9</td><td>Package &#39;StackifyMiddleware&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>aspnetcore-shop/Sample.AspNetCoreShop.csproj</code></td><td>10</td><td>Package &#39;Serilog.Sinks.Stackify&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>aspnetcore-shop/Sample.AspNetCoreShop.csproj</code></td><td>11</td><td>Package &#39;StackifyLib.AspNetCore&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>stackify-json</td><td><code>aspnetcore-shop/Stackify.json</code></td><td></td><td>Stackify.json found. Map AppName/Environment to OTEL_SERVICE_NAME and OTEL_RESOURCE_ATTRIBUTES; migrate Instrumentation[] entries to ActivitySource or additional OTel sources. AppName=Sample.AspNetCoreShop Environment=Production CaptureAllExceptions=True (OpenTelemetry records unhandled exceptions by default; first-chance exceptions need manual spans). Instrumentation entries: 1 (custom methods / StartTrace operations).</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>netframework-iis/packages.config</code></td><td>3</td><td>Package &#39;StackifyLib&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>netframework-iis/packages.config</code></td><td>4</td><td>Package &#39;StackifyLib.log4net&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>netframework-iis/Sample.LegacyIis.csproj</code></td><td>13</td><td>Package &#39;StackifyLib&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>nuget</td><td><code>netframework-iis/Sample.LegacyIis.csproj</code></td><td>16</td><td>Package &#39;StackifyLib.log4net&#39; is referenced. Keep it until OpenTelemetry (or the chosen backend) is proven on this service, then remove it. Do not drop a logging package until a log bridge is in place.</td></tr>
+<tr><td class="critical">critical</td><td>xml-config</td><td><code>netframework-iis/Web.config</code></td><td>4</td><td>Config contains &#39;Stackify.ApiKey&#39;. The key value was not copied into this report. After cut-over, delete it and rotate the key if it was ever committed. An ApiKey value is present and was not copied into this report.</td></tr>
+<tr><td class="critical">critical</td><td>xml-config</td><td><code>netframework-iis/Web.config</code></td><td>5</td><td>Config contains &#39;Stackify.AppName&#39;. Map AppName/Environment to OTEL_SERVICE_NAME / OTEL_RESOURCE_ATTRIBUTES, or replace the appender/target with an OpenTelemetry log bridge. An ApiKey value is present and was not copied into this report.</td></tr>
+<tr><td class="critical">critical</td><td>xml-config</td><td><code>netframework-iis/Web.config</code></td><td>6</td><td>Config contains &#39;Stackify.Environment&#39;. Map AppName/Environment to OTEL_SERVICE_NAME / OTEL_RESOURCE_ATTRIBUTES, or replace the appender/target with an OpenTelemetry log bridge. An ApiKey value is present and was not copied into this report.</td></tr>
+<tr><td class="critical">critical</td><td>xml-config</td><td><code>netframework-iis/Web.config</code></td><td>11</td><td>Config contains &#39;StackifyAppender&#39;. Map AppName/Environment to OTEL_SERVICE_NAME / OTEL_RESOURCE_ATTRIBUTES, or replace the appender/target with an OpenTelemetry log bridge. An ApiKey value is present and was not copied into this report.</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>aspnetcore-shop/Program.cs</code></td><td>6</td><td>Found &#39;WriteTo.Stackify&#39;. Replace the Serilog Stackify sink with Serilog.Sinks.OpenTelemetry or a backend-specific sink. Set the endpoint in the environment, not in source.</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>aspnetcore-shop/Program.cs</code></td><td>10</td><td>Found &#39;RequestTracerMiddleware&#39;. Remove StackifyMiddleware.RequestTracerMiddleware and use OpenTelemetry.Instrumentation.AspNetCore, zero-code auto-instrumentation, or the Microsoft OpenTelemetry Distro.</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>aspnetcore-shop/Program.cs</code></td><td>11</td><td>Found &#39;ConfigureStackifyLogging&#39;. Remove app.ConfigureStackifyLogging and configure a Serilog/NLog/log4net OpenTelemetry sink or the Microsoft.Extensions.Logging bridge.</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>aspnetcore-shop/Program.cs</code></td><td>15</td><td>Found &#39;ProfileTracer.CreateAsOperation&#39;. Replace with ActivitySource.StartActivity (or Activity.Current) and use W3C trace context instead of Trace.CorrelationManager.ActivityId.</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>aspnetcore-shop/Program.cs</code></td><td>16</td><td>Found &#39;Metrics.Count&#39; (StackifyLib.Metrics). Replace Count/Average/Sum/Time/SetGauge/IncrementGauge with System.Diagnostics.Metrics (Meter, Counter, Histogram, ObservableGauge).</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>netframework-iis/CheckoutService.cs</code></td><td>11</td><td>Found &#39;ProfileTracer.CreateAsOperation&#39;. Replace with ActivitySource.StartActivity (or Activity.Current) and use W3C trace context instead of Trace.CorrelationManager.ActivityId.</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>netframework-iis/CheckoutService.cs</code></td><td>14</td><td>Found &#39;Metrics.Count&#39; (StackifyLib.Metrics). Replace Count/Average/Sum/Time/SetGauge/IncrementGauge with System.Diagnostics.Metrics (Meter, Counter, Histogram, ObservableGauge).</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>netframework-iis/CheckoutService.cs</code></td><td>15</td><td>Found &#39;Metrics.Time&#39; (StackifyLib.Metrics). Replace Count/Average/Sum/Time/SetGauge/IncrementGauge with System.Diagnostics.Metrics (Meter, Counter, Histogram, ObservableGauge).</td></tr>
+<tr><td class="warning">warning</td><td>code</td><td><code>netframework-iis/Web.config</code></td><td>11</td><td>Found &#39;StackifyAppender&#39;. Replace the log4net Stackify appender with an OpenTelemetry log bridge and validate correlation.</td></tr>
+</tbody></table>
+<h2>Suggested next steps</h2><ol>
+<li>Export Retrace logs (100,000 entries or 50 MB per file) and dashboard PDFs before 31 March 2027. Alert rules have no documented export — write them down.</li>
+<li>Pilot OpenTelemetry on one service and keep Retrace running until the new path is proven, then cut over in waves.</li>
+<li>Map custom <code>ProfileTracer.CreateAsOperation</code> calls to <code>ActivitySource</code> and <code>StackifyLib.Metrics</code> to <code>System.Diagnostics.Metrics</code>.</li>
+<li>OpenTelemetry auto-instrumentation does not copy method-level call trees, first-chance exceptions, or query-parameter capture.</li>
+<li>For IIS / .NET Framework 4.6.2+, use <code>Register-OpenTelemetryForIIS</code>. For ASP.NET Core to Azure Monitor, use the Microsoft OpenTelemetry Distro (<code>Microsoft.OpenTelemetry</code>).</li>
+</ol>
+<h2>OpenTelemetry starter snippets</h2>
+<h3>ASP.NET Core</h3>
+<pre><code>// ASP.NET Core — Microsoft OpenTelemetry Distro → Azure Monitor
+// Official: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable
+//   dotnet add package Microsoft.OpenTelemetry
+// Do not initialize this together with the older Azure Monitor OpenTelemetry Distro.
+using Microsoft.OpenTelemetry;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.UseMicrosoftOpenTelemetry(options =&gt;
+{
+    options.Exporters = ExportTarget.AzureMonitor;
+});
+// Set APPLICATIONINSIGHTS_CONNECTION_STRING in the environment before startup.
+var app = builder.Build();
+app.Run();</code></pre>
+<h3>IIS / .NET Framework</h3>
+<pre><code># IIS / .NET Framework 4.6.2+ (zero-code)
+
+Source: https://opentelemetry.io/docs/zero-code/dotnet/
+
+Requires Windows PowerShell 5.1 (Desktop). `Register-OpenTelemetryForIIS` restarts IIS.
+
+```powershell
+Import-Module &quot;OpenTelemetry.DotNet.Auto.psm1&quot;
+Install-OpenTelemetryCore
+Register-OpenTelemetryForIIS
+```
+
+Set the common `OTEL_*` values in `Web.config` `appSettings` (for example `OTEL_SERVICE_NAME`).
+Target backend hint from the scan: `azure-monitor`.
+
+Then restart IIS (`iisreset.exe`) after config changes. Keep the Retrace agent running until traces appear in the new backend, then uninstall the Stackify agent and remove profiler environment variables (`CORECLR_PROFILER={cf0d821e-299b-5307-a3d8-b283c03916da}`).</code></pre>
+</body></html>

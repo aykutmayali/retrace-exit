@@ -1,0 +1,38 @@
+# Manual or tag-triggered pack + NuGet.org push.
+# This workflow is not run automatically on ordinary commits.
+# Required repository secret: NUGET_API_KEY
+name: NuGet
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Test
+        run: dotnet test Retrace.Exit.slnx --configuration Release
+
+      - name: Pack
+        run: dotnet pack src/Retrace.Exit/Retrace.Exit.csproj --configuration Release --output ./nupkg
+
+      - name: Push to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "NUGET_API_KEY secret is not set. Skipping push."
+            exit 1
+          fi
+          dotnet nuget push "./nupkg/Retrace.Exit.*.nupkg"             --api-key "$NUGET_API_KEY"             --source https://api.nuget.org/v3/index.json             --skip-duplicate

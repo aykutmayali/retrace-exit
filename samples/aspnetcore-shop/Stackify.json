@@ -1,0 +1,14 @@
+{
+  "AppName": "Sample.AspNetCoreShop",
+  "Environment": "Production",
+  "CaptureAllExceptions": true,
+  "Instrumentation": [
+    {
+      "Assembly": "Sample.AspNetCoreShop",
+      "Class": "Sample.AspNetCoreShop.Jobs.NightlyJob",
+      "Method": "Run",
+      "StartTrace": true,
+      "OperationName": "NightlyJob.Run"
+    }
+  ]
+}
