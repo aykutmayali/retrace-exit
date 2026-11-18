@@ -1,6 +1,7 @@
-# Manual or tag-triggered pack + NuGet.org push.
+# Tag-triggered or manual pack + NuGet.org push via Trusted Publishing (OIDC).
 # This workflow is not run automatically on ordinary commits.
-# Required repository secret: NUGET_API_KEY
+# Trusted Publishing policy on nuget.org: owner=aykutmayali, repo=aykutmayali/retrace-exit,
+# workflow=nuget.yml, no environment, package=Retrace.Exit.
 name: NuGet
 
 on:
@@ -8,6 +9,10 @@ on:
   push:
     tags:
       - "v*"
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   publish:
@@ -21,18 +26,28 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          else
+            VERSION="0.1.0"
+          fi
+          echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Package version: ${VERSION}"
+
       - name: Test
         run: dotnet test Retrace.Exit.slnx --configuration Release
 
       - name: Pack
-        run: dotnet pack src/Retrace.Exit/Retrace.Exit.csproj --configuration Release --output ./nupkg
+        run: dotnet pack src/Retrace.Exit/Retrace.Exit.csproj --configuration Release --output ./nupkg -p:Version=${{ steps.version.outputs.VERSION }}
+
+      - name: NuGet login (OIDC)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: aykutmayali
 
       - name: Push to NuGet.org
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "NUGET_API_KEY secret is not set. Skipping push."
-            exit 1
-          fi
-          dotnet nuget push "./nupkg/Retrace.Exit.*.nupkg"             --api-key "$NUGET_API_KEY"             --source https://api.nuget.org/v3/index.json             --skip-duplicate
+        run: dotnet nuget push "./nupkg/Retrace.Exit.*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
