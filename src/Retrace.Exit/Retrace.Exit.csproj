@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RollForward>LatestMajor</RollForward>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>retrace-exit</ToolCommandName>
+    <PackageId>Retrace.Exit</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Aykut Mayali</Authors>
+    <Copyright>Copyright (c) 2026 Aykut Mayali</Copyright>
+    <Description>Scan a .NET solution for Stackify Retrace usage and draft an OpenTelemetry migration report.</Description>
+    <PackageTags>opentelemetry;stackify;retrace;dotnet;apm;azure-monitor</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/aykutmayali/retrace-exit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/aykutmayali/retrace-exit</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)../../nupkg</PackageOutputPath>
+    <RootNamespace>Retrace.Exit</RootNamespace>
+    <AssemblyName>Retrace.Exit</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

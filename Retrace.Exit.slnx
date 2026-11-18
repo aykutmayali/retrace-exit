@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Retrace.Exit/Retrace.Exit.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Retrace.Exit.Tests/Retrace.Exit.Tests.csproj" />
+  </Folder>
+</Solution>
